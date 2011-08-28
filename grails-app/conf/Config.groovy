@@ -1,16 +1,37 @@
-// locations to search for config files that get merged into the main config
-// config files can either be Java properties files or ConfigSlurper scripts
-
+// Locations to search for config files that get merged into the main config.
+// Config files can either be Java properties files or ConfigSlurper scripts.
 // grails.config.locations = [ "classpath:${appName}-config.properties",
 //                             "classpath:${appName}-config.groovy",
 //                             "file:${userHome}/.grails/${appName}-config.properties",
 //                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
+// Or, take an additional config location from the command line:
 // if(System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
-grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
+// change this to alter the default package name and Maven publishing destination
+// grails.project.groupId = appName
+
+// Flex plugin configuration:
+//   explicitly disable the FLEX web tier compiler in all modes:
+flex.webtier.compiler.enabled = false
+
+// Profiler plugin configuration:
+// grails.profiler.disable = true
+
+// Mail plugin configuration:
+grails.mail.host = 'smtp.cs.arizona.edu'
+
+// Settings for the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.arizona.cs.to.SecUser'
+grails.plugins.springsecurity.userLookup.usernamePropertyName = 'email'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'edu.arizona.cs.to.SecUserRole'
+// grails.plugins.springsecurity.auth.loginFormUrl = '/'
+grails.plugins.springsecurity.authority.className = 'edu.arizona.cs.to.SecRole'
+// grails.plugins.springsecurity.failureHandler.defaultFailureUrl = '/'
+
+
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
@@ -31,60 +52,57 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
 //grails.urlmapping.cache.maxsize = 1000
 
 // The default codec used to encode data with ${}
-grails.views.default.codec = "none" // none, html, base64
-grails.views.gsp.encoding = "UTF-8"
-grails.converters.encoding = "UTF-8"
+grails.views.default.codec="none" // none, html, base64
+grails.views.gsp.encoding="UTF-8"
+grails.converters.encoding="UTF-8"
+
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
+
 // scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = 'Instance'
 
 // Set to false to use the new Grails 1.2 JSONBuilder in the render method
 grails.json.legacy.builder = false
+
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
+
 // whether to install the java.util.logging bridge for sl4j. Disable for AppEngine!
 grails.logging.jul.usebridge = true
+
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
-// set per-environment serverURL stem for creating absolute links
+// Per-environment configurations:
 environments {
-    production {
-        grails.serverURL = "http://www.changeme.com"
-    }
-    development {
-        grails.serverURL = "http://localhost:8080/${appName}"
-    }
-    test {
-        grails.serverURL = "http://localhost:8080/${appName}"
-    }
-
+  development {
+  }
+  test {
+  }
+  production {
+  }
 }
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+  error  'org.codehaus.groovy.grails.web.servlet',        //  controllers
+         'org.codehaus.groovy.grails.web.pages',          //  GSP
+         'org.codehaus.groovy.grails.web.sitemesh',       //  layouts
+         'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+         'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+         'org.codehaus.groovy.grails.commons',            // core / classloading
+         'org.codehaus.groovy.grails.plugins',            // plugins
+         'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+         'org.springframework',
+         'org.hibernate',
+         'net.sf.ehcache.hibernate'
 
-    warn   'org.mortbay.log'
+//    warn   'org.mortbay.log'
+
+  debug  'grails.app'                       // this application
 }
