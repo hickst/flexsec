@@ -1,0 +1,7 @@
+CVS
+cobertura.ser
+.gradle
+logs
+.settings
+.svn
+target
