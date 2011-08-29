@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<s:Application xmlns='*'
+                xmlns:fx='http://ns.adobe.com/mxml/2009'
+                xmlns:s='library://ns.adobe.com/flex/spark'
+                xmlns:mx='library://ns.adobe.com/flex/mx'>
+
+<!--                layout='vertical' minWidth='955' minHeight='600'>  -->
+
+  <fx:Declarations>
+    <!-- Place non-visual elements (e.g., services, value objects) here -->
+    <s:RemoteObject id="ro" destination="newsService" fault="faultHandler(event)">
+      <s:method name="findAll" result="resultHandler(event)"/>
+      <s:method name="findById" result="resultHandler(event)"/>
+      <s:method name="findByText" result="resultHandler(event)"/>
+    </s:RemoteObject>
+  </fx:Declarations>
+
+  <fx:Script><![CDATA[
+    import mx.rpc.events.FaultEvent;
+    import mx.controls.Alert;
+    import mx.collections.ArrayCollection;
+    import mx.rpc.events.ResultEvent;
+
+    [Bindable] private var newsItems:ArrayCollection;
+
+    private function resultHandler (event:ResultEvent) : void {
+      newsItems = event.result as ArrayCollection
+    }
+
+    private function faultHandler (event:FaultEvent) : void {
+      Alert.show(event.fault.faultDetail);
+    }
+
+    public function openNews (item:News) : void {
+      var children:Array = tn.getChildren();
+      for (var i:int = 0; i < children.length; i++) {
+        if (NewsForm(children[i]).newsItem.id == item.id) {
+          tn.selectedChild = children[i];
+          return;
+        }
+      }
+
+      var newsform:NewsForm = new NewsForm();
+      tn.addChild(newsform);
+      newsform.newsItem = item;
+//      tn.selectedChild = newsform;
+      tn.selectedIndex = tn.numChildren-1;
+    }
+  ]]></fx:Script>
+
+  <s:controlBarContent>
+    <s:TextInput id="searchStr"/>
+    <s:Button label="Lookup Id" click="ro.findById(searchStr.text)"/>
+    <s:Button label="Search Text" click="ro.findByText(searchStr.text)"/>
+    <s:Button label="Show All" click="ro.findAll()"/>
+    <s:Button label="New News" click="openNews(new News())"/>
+  </s:controlBarContent>
+
+  <mx:HDividedBox width="100%" height="100%">
+    <mx:DataGrid id="dg" dataProvider="{newsItems}" width="30%" height="100%"
+                 doubleClickEnabled="true"
+                 doubleClick="openNews(dg.selectedItem as News)">
+      <mx:columns>
+        <mx:DataGridColumn dataField="id" headerText="ID"/>
+        <mx:DataGridColumn dataField="dateCreated" headerText="Date Created"/>
+        <mx:DataGridColumn dataField="text" headerText="New Item"/>
+      </mx:columns>
+    </mx:DataGrid>
+    <mx:TabNavigator id="tn" width="70%" height="100%"/>
+  </mx:HDividedBox>
+
+</s:Application>

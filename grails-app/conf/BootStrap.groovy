@@ -48,10 +48,12 @@ class BootStrap {
         SecUserRole.create(scholar0, scholarRole)
     }
 
-    // Create some initial news items
-    def n1 = new News(text: 'ant').save(flush: true, failOnError: true)
-    def n2 = new News(text: 'bat').save(flush: true, failOnError: true)
-    def n3 = new News(text: 'cat').save(flush: true, failOnError: true)
+    // Create some initial news items, iff they dont already exist
+    if (!News.count()) {
+      def n1 = new News(text: 'ant').save(flush: true, failOnError: true)
+      def n2 = new News(text: 'bat').save(flush: true, failOnError: true)
+      def n3 = new News(text: 'cat').save(flush: true, failOnError: true)
+    }
   }
 
   def destroy = {
