@@ -14,8 +14,9 @@
 // grails.project.groupId = appName
 
 // Flex plugin configuration:
-//   explicitly disable the FLEX web tier compiler in all modes:
-flex.webtier.compiler.enabled = false
+grails.plugin.flex.home = '/usr/local/src/flex'
+// explicitly disable the FLEX web tier compiler in all modes:
+// grails.plugin.flex.webtier.compiler.enabled = false
 
 // Profiler plugin configuration:
 // grails.profiler.disable = true
