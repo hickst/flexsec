@@ -2,7 +2,7 @@ package edu.arizona.cs.to
 
 import grails.plugins.springsecurity.Secured
 
-//@Secured(['ROLE_ADMIN'])
+// @Secured(['ROLE_ADMIN'])
 class NewsController {
 
   // Force sensitive actions to only accept POST requests

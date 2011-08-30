@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+                xmlns="*" layout="vertical"
+                xmlns:s="library://ns.adobe.com/flex/spark">
+
+  <s:Button label="Unprotected" click="unproValueClicked()"/>
+  <s:Label text="{unval}"/>
+  <s:Button label="Secret Value" click="secretValueClicked()"/>
+  <s:Label text="{sval}"/>
+  <s:Button label="Clear" click="unval = sval = ''"/>
+  <s:HGroup>
+    <s:Label text="login"/>
+    <s:TextInput id="loginInput" width="100"/>
+    <s:Label text="password"/>
+    <s:TextInput id="passwordInput" width="100"/>
+  </s:HGroup>
+  <s:Button label="login" click="loginClicked()"/>
+  <s:Label text="v4"/>
+
+  <mx:Script><![CDATA[
+    import mx.collections.ArrayCollection;
+    import mx.controls.Alert;
+    import mx.messaging.ChannelSet;
+    import mx.messaging.config.ServerConfig;
+    import mx.rpc.AsyncToken;
+    import mx.rpc.events.FaultEvent;
+    import mx.rpc.events.ResultEvent;
+
+    [Bindable]
+    private var unval:String
+
+    [Bindable]
+    private var sval:String
+
+    private function unproValueHandler(event:ResultEvent):void {
+      unval = event.result as String
+      trace("unval = " + unval)
+    }
+
+    private function secretValueHandler(event:ResultEvent):void {
+      sval = event.result as String
+      trace("sval = " + sval)
+    }
+
+    private function faultHandler(event:FaultEvent):void {
+      Alert.show(event.fault.toString());
+    }
+
+    private function unproValueClicked() : void {
+      // ro.currentValue()
+      ro.findByText('cat');
+    }
+
+    private function secretValueClicked() : void {
+      // ro.secretValue()
+      ro.findById(2);
+    }
+
+    private function loginClicked() : void {
+	var cs:ChannelSet = ServerConfig.getChannelSet(ro.destination);
+	var tok:AsyncToken = cs.login(loginInput.text,passwordInput.text)
+	tok.addResponder(new LoginResponder)
+    }
+  ]]></mx:Script>
+
+  <mx:RemoteObject id="ro" destination="newsService" fault="faultHandler(event)">
+    <mx:method name="findById" result="secretValueHandler(event)"/>
+    <mx:method name="findByText" result="unproValueHandler(event)"/>
+  </mx:RemoteObject>
+
+</mx:Application>

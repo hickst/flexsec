@@ -2,7 +2,7 @@ package edu.arizona.cs.to
 
 /**
  * Class to represent a single news item.
- *   Last modified: TO-116: Initial creation.
+ *   Last modified: Initial recreation.
  */
 class News implements Serializable {
 
@@ -37,6 +37,10 @@ class News implements Serializable {
     if (!text) return ''
     def len = -1 + text.size()
     return text[0..Math.min(39, len)]       // take first 40 characters
+  }
+
+  String toString() {
+    return textPrefix()
   }
 
 }
