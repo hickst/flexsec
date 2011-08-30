@@ -13,13 +13,13 @@ class XyzService {
     return "This is the current value..v4"
   }
 
-  @Secured(['ROLE_CREATOR'])
+  // @Secured(['ROLE_CREATOR'])
   def createValue(String value) {
     println "createValue(${value}) called...."
     this.value = value
   }
 
-  @Secured(['ROLE_VIEWER'])
+  // @Secured(['ROLE_VIEWER'])
   String viewValue() {
     println "viewValue called...."
     def rval = "This is the created value: ${value}"

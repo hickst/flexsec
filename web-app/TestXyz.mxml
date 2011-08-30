@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+                xmlns="*" layout="vertical"
+                xmlns:s="library://ns.adobe.com/flex/spark">
+
+  <s:Button label="Current Value" click="currentValueClicked()"/>
+  <s:Label text="{cval}"/>
+  <s:HGroup>
+    <s:TextInput width="100" id="valueInput"/>
+    <s:Button label="Set Value" click="createValueClicked()"/>
+  </s:HGroup>
+  <s:Button label="View Value" click="viewValueClicked()"/>
+  <s:Label text="{sval}"/>
+  <s:Button label="Clear" click="cval = sval = ''"/>
+  <s:HGroup>
+    <s:Label text="login"/>
+    <s:TextInput id="loginInput" width="100"/>
+    <s:Label text="password"/>
+    <s:TextInput id="passwordInput" width="100"/>
+  </s:HGroup>
+  <s:Button label="login" click="loginClicked()"/>
+  <s:Button label="logout" click="logoutClicked()"/>
+  <s:Label text="v6"/>
+
+  <mx:Script><![CDATA[
+    import mx.collections.ArrayCollection;
+    import mx.controls.Alert;
+    import mx.messaging.ChannelSet;
+    import mx.messaging.config.ServerConfig;
+    import mx.rpc.AsyncToken;
+    import mx.rpc.events.FaultEvent;
+    import mx.rpc.events.ResultEvent;
+
+    [Bindable]
+    private var cval:String
+
+    [Bindable]
+    private var sval:String
+
+    private function currentValueHandler(event:ResultEvent):void {
+      cval = event.result as String
+      trace("cval = " + cval)
+    }
+
+    private function createValueHandler(event:ResultEvent):void {
+      trace("createValueHandler")
+    }
+
+    private function viewValueHandler(event:ResultEvent):void {
+      sval = event.result as String
+      trace("sval = " + sval)
+    }
+
+    private function faultHandler(event:FaultEvent):void {
+      Alert.show(event.fault.toString());
+    }
+
+    private function currentValueClicked() : void {
+      ro.currentValue()
+    }
+
+    private function createValueClicked() : void {
+      ro.createValue(valueInput.text)
+    }
+
+    private function viewValueClicked() : void {
+      ro.viewValue()
+    }
+
+    private function loginClicked() : void {
+      var cs:ChannelSet = ServerConfig.getChannelSet(ro.destination);
+      var tok:AsyncToken = cs.login(loginInput.text,passwordInput.text)
+      tok.addResponder(new LoginResponder)
+    }
+
+    private function logoutClicked() : void {
+      var cs:ChannelSet = ServerConfig.getChannelSet(ro.destination);
+      cs.logout()
+    }
+  ]]></mx:Script>
+
+  <mx:RemoteObject id="ro" destination="xyzService" fault="faultHandler(event)">
+    <mx:method name="currentValue" result="currentValueHandler(event)"/>
+    <mx:method name="createValue" result="createValueHandler(event)"/>
+    <mx:method name="viewValue" result="viewValueHandler(event)"/>
+  </mx:RemoteObject>
+
+</mx:Application>
