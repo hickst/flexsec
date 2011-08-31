@@ -24,7 +24,6 @@ class NewsController {
   }
 
 
-  @Secured(['ROLE_MENTOR'])
   def findAll = {
     def news = newsService.findAll()
     render(view: 'listNewsItems', model: [ 'news': news ])
@@ -44,7 +43,7 @@ class NewsController {
   }
 
 
-  @Secured(['ROLE_ADMIN', 'ROLE_MENTOR'])
+  @Secured(['ROLE_ADMIN'])
   def findById = {
     def id = params.id as Long
     if (!id) {
@@ -85,6 +84,19 @@ class NewsController {
       render("OK: News item '${id}' deleted.")
     else
       render("ERROR: Unable to delete news item '${id}'.")
+  }
+
+
+  @Secured(['ROLE_MENTOR'])
+  def mentorAll = {
+    def news = newsService.findAll()
+    render(view: 'listNewsItems', model: [ 'news': news ])
+  }
+
+  @Secured(['ROLE_SCHOLAR'])
+  def scholarAll = {
+    def news = newsService.findAll()
+    render(view: 'listNewsItems', model: [ 'news': news ])
   }
 
 }

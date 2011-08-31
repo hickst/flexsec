@@ -8,18 +8,18 @@ class XyzService {
 
   static String value
 
-  def currentValue() {
+  String currentValue() {
     println "currentValue called...."
-    return "This is the current value..v4"
+    return "This is the current value: ${value}"
   }
 
-  // @Secured(['ROLE_CREATOR'])
+  @Secured(['ROLE_ADMIN'])
   def createValue(String value) {
     println "createValue(${value}) called...."
     this.value = value
   }
 
-  // @Secured(['ROLE_VIEWER'])
+  @Secured(['ROLE_MENTOR', 'ROLE_SCHOLAR'])
   String viewValue() {
     println "viewValue called...."
     def rval = "This is the created value: ${value}"
