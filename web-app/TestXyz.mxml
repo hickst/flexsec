@@ -9,7 +9,11 @@
     <s:TextInput width="100" id="valueInput"/>
     <s:Button label="Set Value" click="createValueClicked()"/>
   </s:HGroup>
-  <s:Button label="View Value" click="viewValueClicked()"/>
+  <s:HGroup>
+    <s:Button label="Admin View" click="adminViewClicked()"/>
+    <s:Button label="Mentor View" click="mentorViewClicked()"/>
+    <s:Button label="Scholar View" click="scholarViewClicked()"/>
+  </s:HGroup>
   <s:Label text="{sval}"/>
   <s:Button label="Clear" click="cval = sval = ''"/>
   <s:HGroup>
@@ -45,7 +49,17 @@
       trace("createValueHandler")
     }
 
-    private function viewValueHandler(event:ResultEvent):void {
+    private function adminViewHandler(event:ResultEvent):void {
+      sval = event.result as String
+      trace("sval = " + sval)
+    }
+
+    private function mentorViewHandler(event:ResultEvent):void {
+      sval = event.result as String
+      trace("sval = " + sval)
+    }
+
+    private function scholarViewHandler(event:ResultEvent):void {
       sval = event.result as String
       trace("sval = " + sval)
     }
@@ -62,8 +76,16 @@
       ro.createValue(valueInput.text)
     }
 
-    private function viewValueClicked() : void {
-      ro.viewValue()
+    private function adminViewClicked() : void {
+      ro.adminView()
+    }
+
+    private function mentorViewClicked() : void {
+      ro.mentorView()
+    }
+
+    private function scholarViewClicked() : void {
+      ro.scholarView()
     }
 
     private function loginClicked() : void {
@@ -81,7 +103,9 @@
   <mx:RemoteObject id="ro" destination="xyzService" fault="faultHandler(event)">
     <mx:method name="currentValue" result="currentValueHandler(event)"/>
     <mx:method name="createValue" result="createValueHandler(event)"/>
-    <mx:method name="viewValue" result="viewValueHandler(event)"/>
+    <mx:method name="adminView" result="adminViewHandler(event)"/>
+    <mx:method name="mentorView" result="mentorViewHandler(event)"/>
+    <mx:method name="scholarView" result="scholarViewHandler(event)"/>
   </mx:RemoteObject>
 
 </mx:Application>

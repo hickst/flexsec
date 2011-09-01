@@ -19,10 +19,24 @@ class XyzService {
     this.value = value
   }
 
-  @Secured(['ROLE_MENTOR', 'ROLE_SCHOLAR'])
-  String viewValue() {
-    println "viewValue called...."
-    def rval = "This is the created value: ${value}"
+  @Secured(['ROLE_ADMIN'])
+  String adminView() {
+    println "Admin view called...."
+    def rval = "This is the current value: ${value} as seen by the ADMIN"
+    return rval
+  }
+
+  @Secured(['ROLE_MENTOR'])
+  String mentorView() {
+    println "Mentor view called...."
+    def rval = "This is the current value: ${value} as seen by the MENTOR"
+    return rval
+  }
+
+  @Secured(['ROLE_SCHOLAR'])
+  String scholarView() {
+    println "Scholar view called...."
+    def rval = "This is the current value: ${value} as seen by the SCHOLAR"
     return rval
   }
 
