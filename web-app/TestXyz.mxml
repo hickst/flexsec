@@ -20,10 +20,9 @@
   </s:HGroup>
   <s:Button label="login" click="loginClicked()"/>
   <s:Button label="logout" click="logoutClicked()"/>
-  <s:Label text="v6"/>
+  <s:Label text="v8"/>
 
   <mx:Script><![CDATA[
-    import mx.collections.ArrayCollection;
     import mx.controls.Alert;
     import mx.messaging.ChannelSet;
     import mx.messaging.config.ServerConfig;
